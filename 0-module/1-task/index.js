@@ -1,3 +1,3 @@
 function sum(m, n) {
-  return m;
+  return m + n;
 }
