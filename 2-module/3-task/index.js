@@ -10,6 +10,7 @@ let calculator = {
   mul() {  
     return this.num1 * this.num2;
   },
+=======
 };
 
 // НЕ УДАЛЯТЬ СТРОКУ, НУЖНА ДЛЯ ПРОВЕРКИ
