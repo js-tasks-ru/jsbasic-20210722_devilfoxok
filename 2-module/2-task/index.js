@@ -9,4 +9,5 @@ function isEmpty(obj) {
   if ( counter == 0 ) { return true; }
   
   return false;
+
 }
