@@ -40,6 +40,9 @@ export default class CartIcon {
   }
 
   updatePosition() {
+    if (!this.elem.offsetWidth) {
+      return;
+    }
     if (window.pageYOffset > this.initialPosition || window.pageYOffset > 50 ) {
       this.leftIndent = Math.min(
         document.querySelector('.container').getBoundingClientRect().right + 20,
