@@ -41,7 +41,7 @@ export default class CartIcon {
 
   updatePosition() {
     if (window.pageYOffset > this.initialPosition || window.pageYOffset > 50 ) {
-      let leftIndent = Math.min(
+      this.leftIndent = Math.min(
         document.querySelector('.container').getBoundingClientRect().right + 20,
         document.documentElement.clientWidth - this.elem.offsetWidth - 10
       ) + 'px'
@@ -51,7 +51,7 @@ export default class CartIcon {
         top: '50px',
         zIndex: 1e3,
         right: '10px',
-        left: leftIndent
+        left: this.leftIndent
       });
     } else {
       Object.assign(this.elem.style, {
