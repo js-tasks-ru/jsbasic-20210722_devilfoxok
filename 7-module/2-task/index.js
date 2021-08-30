@@ -19,8 +19,7 @@ export default class Modal {
         </h3>
       </div>
 
-      <div class="modal__body">
-        A сюда нужно добавлять содержимое тела модального окна
+      <div class="modal__body">      
       </div>
     </div>
 
@@ -44,7 +43,7 @@ export default class Modal {
 
   setBody = (e) => {
     let modalBody = this.elem.querySelector('.modal__body')
-    modalBody.innerHTML = '';
+    // modalBody.innerHTML = '';
     modalBody.append(e)
   }
 
