@@ -10,7 +10,7 @@ export default class ProductCard {
     <div class="card">
       <div class="card__top">
         <img src="/assets/images/products/${this.image}" class="card__image" alt="product">
-        <span class="card__price">€${this.price}.00</span>
+        <span class="card__price">€${this.price.toFixed(2)}</span>
       </div>
       <div class="card__body">
         <div class="card__title">${this.name}</div>
