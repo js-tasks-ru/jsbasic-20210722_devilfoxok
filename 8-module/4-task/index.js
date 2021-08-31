@@ -37,7 +37,7 @@ export default class Cart {
     //   this.cartItems[this.productIndex].count = 0
     // }
 
-    this.onProductUpdate(this.cartItems, productId, amount);
+    // this.onProductUpdate(this.cartItems, productId, amount);
   }
 
   isEmpty() {
@@ -111,32 +111,72 @@ export default class Cart {
       }
       this.modal.setBody(this.renderOrderForm());
       this.modal.open();
+
       this.buttonPlus = this.modal.elem.querySelectorAll('.cart-counter__button_plus')
+
       for (let element of this.buttonPlus) {
-        element.addEventListener('click', (event) => {          
-          let productId = event.target.closest('.cart-product').dataset.productId
-          this.updateProductCount(productId, 1)
-          this.modal.elem.remove()
-          this.renderModal()
-        })
+        element.addEventListener('click', (event) =>  this.onProductUpdate(event, 1) )
       }
+
       this.buttonMinus = this.modal.elem.querySelectorAll('.cart-counter__button_minus')
+
       for (let element of this.buttonMinus) {
-        element.addEventListener('click', (event) => {          
-          let productId = event.target.closest('.cart-product').dataset.productId
-          this.updateProductCount(productId, -1)
-          this.modal.elem.remove()
-          if (this.getTotalCount() > 0) {
-            this.renderModal()            
-          } else document.body.classList.remove('is-modal-open')          
-        })
+        element.addEventListener('click', (event) => this.onProductUpdate(event, -1))
       }
+
       this.submitForm = this.modal.elem.querySelector('.cart-form')
       this.submitForm.addEventListener('submit', (event) => this.onSubmit(event))
   }
 
-  onProductUpdate(cartItem) {
-    // ...ваш код
+  onProductUpdate(event, a) {
+    this.currentModal = document.querySelector('.modal');
+
+    if (this.currentModal && a == 1) { 
+
+    this.productRowId = event.target.closest('.cart-product').dataset.productId
+    this.updateProductCount(this.productRowId, 1)
+    this.productIndex = this.cartItems.findIndex(item => item.product.id == this.productRowId)          
+    this.updatedItem = this.cartItems[this.productIndex]
+    this.updatedProductRow = this.renderProduct(this.updatedItem.product, this.updatedItem.count)
+    this.buttonPlus = this.updatedProductRow.querySelector('.cart-counter__button_plus')
+    this.buttonPlus.addEventListener('click', (event) => this.onProductUpdate(event, 1))
+    this.buttonMinus = this.updatedProductRow.querySelector('.cart-counter__button_minus')
+    this.buttonMinus.addEventListener('click', (event) => this.onProductUpdate(event, -1))
+    this.oldProductRow = event.target.closest('.cart-product')
+    this.oldProductRow.replaceWith(this.updatedProductRow)  
+    
+    this.total = this.modal.elem.querySelector('.cart-buttons__info-price')
+    this.total.innerHTML = `€${this.getTotalPrice().toFixed(2)}`
+
+    }
+
+    if (this.currentModal && a == -1) {
+
+    this.productRowId = event.target.closest('.cart-product').dataset.productId
+    this.updateProductCount(this.productRowId, -1)
+
+    if (this.getTotalCount() == 0) {
+      this.modal.elem.remove()
+    }
+
+    this.productIndex = this.cartItems.findIndex(item => item.product.id == this.productRowId)
+    
+    if (this.productIndex == - 1) {
+      event.target.closest('.cart-product').remove()
+    } else {
+    this.updatedItem = this.cartItems[this.productIndex]
+    this.updatedProductRow = this.renderProduct(this.updatedItem.product, this.updatedItem.count)
+    this.buttonMinus = this.updatedProductRow.querySelector('.cart-counter__button_minus')
+    this.buttonMinus.addEventListener('click', (event) => this.onProductUpdate(event, -1))
+    this.buttonPlus = this.updatedProductRow.querySelector('.cart-counter__button_plus')
+    this.buttonPlus.addEventListener('click', (event) => this.onProductUpdate(event, 1))
+    this.oldProductRow = event.target.closest('.cart-product')
+    this.oldProductRow.replaceWith(this.updatedProductRow)
+    }
+    this.total = this.modal.elem.querySelector('.cart-buttons__info-price')
+    this.total.innerHTML = `€${this.getTotalPrice().toFixed(2)}`
+    }
+    
 
     this.cartIcon.update(this);
   }
@@ -156,6 +196,12 @@ export default class Cart {
 
   renderModalOnsubmit () {
     this.currentModal = document.querySelector('.modal')
+
+    if (this.currentModal) {
+
+      this.currentModal.remove()
+
+    }
     this.currentModal.remove()
     this.modal = new Modal();
     this.modal.setTitle('Success!');
