@@ -156,7 +156,7 @@ export default class Cart {
     this.updateProductCount(this.productRowId, -1)
 
     if (this.getTotalCount() == 0) {
-      this.modal.elem.remove()
+      this.modal.close()
     }
 
     this.productIndex = this.cartItems.findIndex(item => item.product.id == this.productRowId)

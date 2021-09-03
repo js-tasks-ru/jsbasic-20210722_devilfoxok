@@ -3,6 +3,7 @@ import createElement from '../../assets/lib/create-element.js';
 export default class RibbonMenu {
   constructor(categories) {
     this.categories = categories;
+    this.value = ''
     this.elem = createElement(
       `<!--Корневой элемент RibbonMenu-->
       <div class="ribbon">
@@ -21,7 +22,7 @@ export default class RibbonMenu {
           <a href="#" class="ribbon__item" data-id="seafood-dishes">Seafood dishes</a>
           <a href="#" class="ribbon__item" data-id="vegetable-dishes">Vegetable dishes</a>
           <a href="#" class="ribbon__item" data-id="bits-and-bites">Bits and bites</a>
-          <a href="#" class="ribbon__item" data-id="on-the-side ribbon__item_active">On the side</a>
+          <a href="#" class="ribbon__item" data-id="on-the-side">On the side</a>
         </nav>
     
         <!--Кнопка прокрутки вправо-->
@@ -76,6 +77,8 @@ export default class RibbonMenu {
     this.elem.dispatchEvent(ribbonSelect);
     this.elem.querySelector('.ribbon__item_active').classList.remove('ribbon__item_active');
     event.target.closest('.ribbon__item').classList.add('ribbon__item_active');
+    this.value = event.target.closest('.ribbon__item').dataset.id
+    if (this.value == 'All') { this.value = '' }
   }
 
 }
