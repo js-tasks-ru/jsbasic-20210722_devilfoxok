@@ -1,7 +1,8 @@
 import createElement from '../../assets/lib/create-element.js';
 
 export default class StepSlider {
-  constructor({ steps, value = 0 }) {
+  constructor({ steps, value = 4 }) {
+    this.value = value;
     this.elem = createElement(`
     <div class="slider">
 
@@ -94,16 +95,20 @@ export default class StepSlider {
   }
 
   function onMouseMove(event) {
+    event.preventDefault()
     moveAt(event.pageX);      
   }
 
   function stopMove(event) {
     document.removeEventListener('pointermove', onMouseMove);
+    document.removeEventListener('pointerup', stopMove);
     thumb.onpointerup = null;
     let percent = event.pageX - slider.getBoundingClientRect().left;
     let stages = steps - 1;
     let relative = percent / slider.offsetWidth * stages;
     let valueRound = Math.round(relative)
+    if (valueRound < 0) {valueRound = 0}
+    if (valueRound > 4) {valueRound = 4}
     thumb.style.left = `${Math.round(valueRound * 100 / stages)}%`
     progress.style.width = `${Math.round(valueRound * 100 / stages)}%`
     slider.classList.remove('slider_dragging')

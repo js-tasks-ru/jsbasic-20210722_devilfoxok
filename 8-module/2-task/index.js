@@ -4,6 +4,7 @@ import ProductCard from '../../6-module/2-task/index.js';
 export default class ProductGrid {
   constructor(products) {
     this.products = products;
+    // console.log(products)
     this.filters = {};
     this.render();
   }
@@ -14,7 +15,7 @@ export default class ProductGrid {
       if (this.filters.noNuts == true && product.nuts) continue;
       if (this.filters.vegeterianOnly == true && !product.vegeterian) continue;
       if (this.filters.category && product.category != this.filters.category) continue;
-      if (this.filters.maxSpiciness && product.spiciness > this.filters.maxSpiciness) continue;
+      if (this.filters.maxSpiciness + 1 && product.spiciness + 1 > this.filters.maxSpiciness + 1) continue;
       let card = new ProductCard(product);
       this.grid__inner.append(card.elem);       
     }    
